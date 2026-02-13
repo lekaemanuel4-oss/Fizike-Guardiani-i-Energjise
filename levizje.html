@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulator Avancuar i Lëvizjes së Projektileve</title>
+<title>Simulator Avancuar i Lëvizjes së Trupave </title>
 <style>
 body {
     margin: 0;
@@ -75,6 +75,30 @@ canvas {
     width: 340px;
     margin-top: 20px;
 }
+
+.back-btn{
+    position:fixed;
+    top:20px;
+    left:20px;
+    width:45px;
+    height:45px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+    color:white;
+    font-size:20px;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    background:#00ff88;
+    color:black;
+}
+
 </style>
 </head>
 <body>
@@ -107,8 +131,6 @@ canvas {
     <p>Gjatesia (sipas boshtit horizontal): -</p>
     <p>Lartesia Maksimale (sipas boshtit vertikal): -</p>
     <p>Koha e Fluturimit: -</p>
-    <p>Këndi Optimal: -</p>
-    <p>Eficienca: -</p>
 </div>
 
 <div class="explanation" id="explanation">
@@ -117,14 +139,12 @@ canvas {
     <ul>
         <li>Pa rezistencë ajri: lëvizje ideale parabolike</li>
         <li>Me rezistencë ajri: shpejtësia zvogëlohet për shkak të forcës së tërheqjes (F = -kv)</li>
-        <li>Këndi optimal i lançimit maksimizon distancën horizontale</li>
-        <li>Eficienca krahason këndin e zgjedhur me atë optimal matematikisht</li>
+        
     </ul>
 </div>
 
-<div class="chart-container">
-    <canvas id="chartCanvas" width="340" height="200"></canvas>
-</div>
+<a href="index.html" class="back-btn">⬅</a>
+
 
 </div>
 
