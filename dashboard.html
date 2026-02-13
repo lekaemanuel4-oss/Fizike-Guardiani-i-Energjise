@@ -15,7 +15,6 @@ body{
     color:white;
 }
 
-/* HEADER */
 header{
     background:rgba(0,255,120,0.9);
     padding:1rem 2rem;
@@ -24,39 +23,30 @@ header{
     align-items:center;
 }
 
-header h1{
-    margin:0;
-    color:black;
-    font-weight:700;
-}
+header h1{ margin:0; color:black; }
 
 nav a{
     margin-left:1.2rem;
     color:black;
     text-decoration:none;
     font-weight:600;
-    transition:0.3s;
 }
 
-nav a:hover{
-    opacity:0.7;
+main{ padding:2rem; }
+
+.period-section{
+    margin-bottom:2.5rem;
 }
 
-/* TITULLI */
-main{
-    padding:2rem;
-}
-
-h2{
+.period-title{
+    font-size:1.4rem;
     margin-bottom:1rem;
 }
 
-/* KARTAT */
 .summary-cards{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:1.5rem;
-    margin-bottom:2rem;
 }
 
 .card{
@@ -65,69 +55,36 @@ h2{
     border-radius:18px;
     backdrop-filter:blur(10px);
     text-align:center;
-    transition:0.3s;
     box-shadow:0 8px 20px rgba(0,0,0,0.3);
 }
 
-.card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 12px 25px rgba(0,255,150,0.4);
-}
-
-.card h3{
-    margin:0;
-    font-size:1rem;
-    opacity:0.9;
-}
-
 .card p{
-    font-size:1.6rem;
-    font-weight:700;
-    margin-top:0.5rem;
+    font-size:1.2rem;
+    font-weight:600;
 }
 
-/* LISTA */
-ul{
-    list-style:none;
-    padding:0;
-}
+ul{ list-style:none; padding:0; }
 
 li{
     background:rgba(255,255,255,0.07);
-    padding:0.8rem 1rem;
+    padding:1rem;
     border-radius:12px;
-    margin:0.6rem 0;
+    margin:0.8rem 0;
+}
+
+.device-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
-/* BUTON FSHI */
 button{
-    background:linear-gradient(135deg,#ff4d4d,#cc0000);
+    background:#ff4d4d;
     border:none;
     padding:0.4rem 0.8rem;
     border-radius:8px;
     color:white;
-    font-weight:600;
     cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    transform:scale(1.05);
-    box-shadow:0 4px 15px rgba(255,0,0,0.5);
-}
-
-/* MOBILE */
-@media(max-width:600px){
-    header{
-        flex-direction:column;
-        text-align:center;
-    }
-    nav{
-        margin-top:0.5rem;
-    }
 }
 </style>
 </head>
@@ -136,10 +93,9 @@ button:hover{
 <header>
 <h1>⚡ Energy Guardian</h1>
 <nav>
-  <a href="index.html">Paneli Kryesor</a>
+  <a href="index.html">Kthehu</a>
   <a href="add-appliance.html">Shto Pajisje</a>
   <a href="simulator.html">Simulimi</a>
-  <a href="reports.html">Raportet</a>
 </nav>
 </header>
 
@@ -147,29 +103,64 @@ button:hover{
 
 <h2>Paneli i Monitorimit</h2>
 
+<!-- ================= DITOR ================= -->
+<div class="period-section">
+<div class="period-title">📅 Analiza Ditore</div>
 <div class="summary-cards">
   <div class="card">
-    <h3>Konsumi Total</h3>
-    <p id="total-kwh">0 kWh</p>
+    <h3>Konsum</h3>
+    <p id="daily-kwh"></p>
   </div>
-
   <div class="card">
-    <h3>Kosto Totale</h3>
-    <p id="total-cost">0 lekë</p>
+    <h3>Kosto</h3>
+    <p id="daily-cost"></p>
   </div>
-
   <div class="card">
-    <h3>Emetimi CO₂</h3>
-    <p id="total-co2">0 kg</p>
-  </div>
-
-  <div class="card">
-    <h3>Eco Score</h3>
-    <p id="eco-score">0/100</p>
+    <h3>CO₂</h3>
+    <p id="daily-co2"></p>
   </div>
 </div>
+</div>
 
-<h3>Pajisjet me Konsum</h3>
+<!-- ================= MUJOR ================= -->
+<div class="period-section">
+<div class="period-title">🗓️ Analiza Mujore</div>
+<div class="summary-cards">
+  <div class="card">
+    <h3>Konsum</h3>
+    <p id="monthly-kwh"></p>
+  </div>
+  <div class="card">
+    <h3>Kosto</h3>
+    <p id="monthly-cost"></p>
+  </div>
+  <div class="card">
+    <h3>CO₂</h3>
+    <p id="monthly-co2"></p>
+  </div>
+</div>
+</div>
+
+<!-- ================= VJETOR ================= -->
+<div class="period-section">
+<div class="period-title">📆 Analiza Vjetore</div>
+<div class="summary-cards">
+  <div class="card">
+    <h3>Konsum</h3>
+    <p id="yearly-kwh"></p>
+  </div>
+  <div class="card">
+    <h3>Kosto</h3>
+    <p id="yearly-cost"></p>
+  </div>
+  <div class="card">
+    <h3>CO₂</h3>
+    <p id="yearly-co2"></p>
+  </div>
+</div>
+</div>
+
+<h3>Pajisjet</h3>
 <ul id="appliance-list"></ul>
 
 </main>
@@ -178,24 +169,31 @@ button:hover{
 
 let appliances = JSON.parse(localStorage.getItem('appliances') || '[]');
 
+const pricePerKwh = 9.5;
+const co2PerKwh = 0.7;
+
 function updateDashboard(){
 
-  let totalKwh = 0;
-  let totalCost = 0;
-  let totalCO2 = 0;
+  let dailyKwh = 0;
 
-  appliances.forEach(a => {
-      let energy = (a.watt/1000) * a.hours;
-      totalKwh += energy;
-      totalCost += energy * 9.5;
-      totalCO2 += energy * 0.7;
+  appliances.forEach(a=>{
+      dailyKwh += (a.watt/1000)*a.hours;
   });
 
-  document.getElementById("total-kwh").textContent = totalKwh.toFixed(2)+" kWh";
-  document.getElementById("total-cost").textContent = totalCost.toFixed(2)+" lekë";
-  document.getElementById("total-co2").textContent = totalCO2.toFixed(2)+" kg";
-  document.getElementById("eco-score").textContent =
-      Math.max(0,100 - totalKwh*5).toFixed(0)+"/100";
+  let monthlyKwh = dailyKwh * 30;
+  let yearlyKwh = dailyKwh * 365;
+
+  document.getElementById("daily-kwh").textContent = dailyKwh.toFixed(2)+" kWh";
+  document.getElementById("monthly-kwh").textContent = monthlyKwh.toFixed(2)+" kWh";
+  document.getElementById("yearly-kwh").textContent = yearlyKwh.toFixed(2)+" kWh";
+
+  document.getElementById("daily-cost").textContent = (dailyKwh*pricePerKwh).toFixed(2)+" lekë";
+  document.getElementById("monthly-cost").textContent = (monthlyKwh*pricePerKwh).toFixed(2)+" lekë";
+  document.getElementById("yearly-cost").textContent = (yearlyKwh*pricePerKwh).toFixed(2)+" lekë";
+
+  document.getElementById("daily-co2").textContent = (dailyKwh*co2PerKwh).toFixed(2)+" kg";
+  document.getElementById("monthly-co2").textContent = (monthlyKwh*co2PerKwh).toFixed(2)+" kg";
+  document.getElementById("yearly-co2").textContent = (yearlyKwh*co2PerKwh).toFixed(2)+" kg";
 
   let list = document.getElementById("appliance-list");
   list.innerHTML="";
@@ -203,21 +201,21 @@ function updateDashboard(){
   appliances.forEach((a,i)=>{
       let li = document.createElement("li");
 
-      let info = document.createElement("span");
-      info.textContent = `${a.name} – ${a.watt}W × ${a.hours} orë`;
+      li.innerHTML = `
+      <div class="device-header">
+        <strong>${a.name} – ${a.watt}W × ${a.hours} orë</strong>
+        <button onclick="deleteAppliance(${i})">Fshi</button>
+      </div>
+      `;
 
-      let btn = document.createElement("button");
-      btn.textContent = "Fshi";
-      btn.onclick = ()=>{
-          appliances.splice(i,1);
-          localStorage.setItem('appliances', JSON.stringify(appliances));
-          updateDashboard();
-      };
-
-      li.appendChild(info);
-      li.appendChild(btn);
       list.appendChild(li);
   });
+}
+
+function deleteAppliance(index){
+    appliances.splice(index,1);
+    localStorage.setItem('appliances', JSON.stringify(appliances));
+    updateDashboard();
 }
 
 updateDashboard();
