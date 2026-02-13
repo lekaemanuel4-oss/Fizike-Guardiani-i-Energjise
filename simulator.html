@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Guardian - Simulimi Inteligjent</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    font-family:'Inter',sans-serif;
+    margin:0;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+}
+
+/* HEADER */
+header{
+    background:rgba(0,255,120,0.9);
+    padding:1rem 2rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header h1{
+    margin:0;
+    color:black;
+    font-weight:700;
+}
+
+nav a{
+    margin-left:1.2rem;
+    color:black;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.3s;
+}
+
+nav a:hover{
+    opacity:0.7;
+}
+
+/* MAIN */
+main{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:85vh;
+    padding:2rem;
+}
+
+.sim-container{
+    background:rgba(255,255,255,0.08);
+    padding:2.5rem;
+    border-radius:20px;
+    backdrop-filter:blur(15px);
+    width:100%;
+    max-width:550px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.sim-container h2{
+    margin-top:0;
+    text-align:center;
+    margin-bottom:1.5rem;
+}
+
+/* INPUTS */
+label{
+    font-size:0.9rem;
+    opacity:0.9;
+}
+
+input, select{
+    width:100%;
+    padding:0.8rem;
+    margin:0.5rem 0 1.2rem 0;
+    border-radius:10px;
+    border:none;
+    outline:none;
+    font-size:1rem;
+}
+
+input:focus, select:focus{
+    box-shadow:0 0 0 2px #00ff88;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:0.9rem;
+    border-radius:12px;
+    border:none;
+    background:linear-gradient(135deg,#00ff88,#00cc66);
+    color:#000;
+    font-weight:700;
+    font-size:1rem;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+    box-shadow:0 5px 20px rgba(0,255,136,0.4);
+}
+
+/* RESULT */
+.result-box{
+    margin-top:1.5rem;
+    padding:1rem;
+    border-radius:12px;
+    text-align:center;
+    font-weight:600;
+    display:none;
+}
+
+.positive{
+    background:rgba(0,255,120,0.15);
+    border:1px solid #00ff88;
+}
+
+.negative{
+    background:rgba(255,80,80,0.15);
+    border:1px solid #ff4d4d;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+    header{
+        flex-direction:column;
+        text-align:center;
+    }
+    nav{
+        margin-top:0.5rem;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>⚡ Energy Guardian</h1>
+<nav>
+  <a href="dashboard.html">Paneli Kryesor</a>
+  <a href="add-appliance.html">Shto Pajisje</a>
+  <a href="simulator.html">Simulimi</a>
+  <a href="reports.html">Raportet</a>
+</nav>
+</header>
+
+<main>
+
+<div class="sim-container">
+<h2>Simulimi "Po sikur...?"</h2>
+
+<label>Zgjidh pajisjen</label>
+<select id="sim-appliance"></select>
+
+<label>Fuqia e re (Watt)</label>
+<input type="number" id="sim-watt" placeholder="p.sh. 10">
+
+<label>Orë përdorimi në ditë</label>
+<input type="number" id="sim-hours" placeholder="p.sh. 5">
+
+<button onclick="simulate()">Krahaso Konsumin</button>
+
+<div id="sim-result" class="result-box"></div>
+
+</div>
+
+</main>
+
+<script>
+
+let appliances = JSON.parse(localStorage.getItem('appliances') || '[]');
+
+function updateSimulatorOptions(){
+    let sel = document.getElementById("sim-appliance");
+    sel.innerHTML = "";
+
+    if(appliances.length === 0){
+        let opt = document.createElement("option");
+        opt.textContent = "Nuk ka pajisje të regjistruara";
+        sel.appendChild(opt);
+        return;
+    }
+
+    appliances.forEach((a,i)=>{
+        let opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = a.name;
+        sel.appendChild(opt);
+    });
+}
+
+function simulate(){
+
+    if(appliances.length === 0){
+        alert("Së pari shtoni një pajisje!");
+        return;
+    }
+
+    let idx = parseInt(document.getElementById("sim-appliance").value);
+    let newWatt = parseFloat(document.getElementById("sim-watt").value);
+    let newHours = parseFloat(document.getElementById("sim-hours").value);
+
+    if(isNaN(idx) || isNaN(newWatt) || isNaN(newHours) || newWatt<=0 || newHours<=0){
+        alert("Ju lutem plotësoni të dhëna të sakta!");
+        return;
+    }
+
+    let old = appliances[idx];
+
+    let oldEnergy = (old.watt/1000)*old.hours;
+    let newEnergy = (newWatt/1000)*newHours;
+
+    let savedKwh = oldEnergy - newEnergy;
+    let savedCost = savedKwh * 9.5;
+    let savedCO2 = savedKwh * 0.7;
+
+    let resultBox = document.getElementById("sim-result");
+    resultBox.style.display = "block";
+
+    if(savedKwh > 0){
+        resultBox.className = "result-box positive";
+        resultBox.innerHTML =
+        `✅ Kursim ditor:<br>
+        ${savedKwh.toFixed(2)} kWh<br>
+        ${savedCost.toFixed(2)} lekë<br>
+        ${savedCO2.toFixed(2)} kg CO₂`;
+    } else {
+        resultBox.className = "result-box negative";
+        resultBox.innerHTML =
+        `⚠️ Konsumi rritet me:<br>
+        ${Math.abs(savedKwh).toFixed(2)} kWh<br>
+        ${Math.abs(savedCost).toFixed(2)} lekë<br>
+        ${Math.abs(savedCO2).toFixed(2)} kg CO₂`;
+    }
+}
+
+updateSimulatorOptions();
+
+</script>
+
+</body>
+</html>
