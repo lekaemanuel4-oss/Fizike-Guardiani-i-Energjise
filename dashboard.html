@@ -15,6 +15,7 @@ body{
     color:white;
 }
 
+/* HEADER */
 header{
     background:rgba(0,255,120,0.9);
     padding:1rem 2rem;
@@ -23,30 +24,29 @@ header{
     align-items:center;
 }
 
-header h1{ margin:0; color:black; }
+header h1{ margin:0; color:black; font-weight:700; }
 
 nav a{
     margin-left:1.2rem;
     color:black;
     text-decoration:none;
     font-weight:600;
+    transition:0.3s;
 }
 
+nav a:hover{ opacity:0.7; }
+
+/* MAIN */
 main{ padding:2rem; }
 
-.period-section{
-    margin-bottom:2.5rem;
-}
-
-.period-title{
-    font-size:1.4rem;
-    margin-bottom:1rem;
-}
+.period-section{ margin-bottom:2.5rem; }
+.period-title{ font-size:1.4rem; margin-bottom:1rem; }
 
 .summary-cards{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:1.5rem;
+    margin-bottom:1.5rem;
 }
 
 .card{
@@ -56,35 +56,61 @@ main{ padding:2rem; }
     backdrop-filter:blur(10px);
     text-align:center;
     box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    transition:0.3s;
 }
 
-.card p{
-    font-size:1.2rem;
-    font-weight:600;
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 12px 25px rgba(0,255,150,0.4);
 }
 
+.card h3{ margin:0; font-size:1rem; opacity:0.9; }
+.card p{ font-size:1.2rem; font-weight:600; margin-top:0.5rem; }
+
+/* LISTA E PAJISJEVE */
 ul{ list-style:none; padding:0; }
 
 li{
-    background:rgba(255,255,255,0.07);
-    padding:1rem;
-    border-radius:12px;
-    margin:0.8rem 0;
+    background:linear-gradient(135deg,rgba(0,255,120,0.1),rgba(0,150,255,0.1));
+    padding:1.2rem;
+    border-radius:16px;
+    margin:1rem 0;
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+    transition:0.3s;
+    border:1px solid rgba(0,255,120,0.2);
+}
+
+li:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 25px rgba(0,255,150,0.4);
 }
 
 .device-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-bottom:0.8rem;
 }
 
+li div span{ line-height:1.4; opacity:0.85; font-size:0.9rem; display:block; }
+
 button{
-    background:#ff4d4d;
+    background:linear-gradient(135deg,#ff4d4d,#cc0000);
     border:none;
     padding:0.4rem 0.8rem;
     border-radius:8px;
     color:white;
+    font-weight:600;
     cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{ transform:scale(1.05); }
+
+/* MOBILE */
+@media(max-width:600px){
+    header{ flex-direction:column; text-align:center; }
+    nav{ margin-top:0.5rem; }
 }
 </style>
 </head>
@@ -166,50 +192,61 @@ button{
 </main>
 
 <script>
-
 let appliances = JSON.parse(localStorage.getItem('appliances') || '[]');
-
 const pricePerKwh = 9.5;
 const co2PerKwh = 0.7;
 
 function updateDashboard(){
 
-  let dailyKwh = 0;
+    // ================= TOTAL =================
+    let dailyKwh = 0;
+    appliances.forEach(a=>{ dailyKwh += (a.watt/1000)*a.hours; });
+    let monthlyKwh = dailyKwh * 30;
+    let yearlyKwh = dailyKwh * 365;
 
-  appliances.forEach(a=>{
-      dailyKwh += (a.watt/1000)*a.hours;
-  });
+    document.getElementById("daily-kwh").textContent = dailyKwh.toFixed(2)+" kWh";
+    document.getElementById("monthly-kwh").textContent = monthlyKwh.toFixed(2)+" kWh";
+    document.getElementById("yearly-kwh").textContent = yearlyKwh.toFixed(2)+" kWh";
 
-  let monthlyKwh = dailyKwh * 30;
-  let yearlyKwh = dailyKwh * 365;
+    document.getElementById("daily-cost").textContent = (dailyKwh*pricePerKwh).toFixed(2)+" lekë";
+    document.getElementById("monthly-cost").textContent = (monthlyKwh*pricePerKwh).toFixed(2)+" lekë";
+    document.getElementById("yearly-cost").textContent = (yearlyKwh*pricePerKwh).toFixed(2)+" lekë";
 
-  document.getElementById("daily-kwh").textContent = dailyKwh.toFixed(2)+" kWh";
-  document.getElementById("monthly-kwh").textContent = monthlyKwh.toFixed(2)+" kWh";
-  document.getElementById("yearly-kwh").textContent = yearlyKwh.toFixed(2)+" kWh";
+    document.getElementById("daily-co2").textContent = (dailyKwh*co2PerKwh).toFixed(2)+" kg";
+    document.getElementById("monthly-co2").textContent = (monthlyKwh*co2PerKwh).toFixed(2)+" kg";
+    document.getElementById("yearly-co2").textContent = (yearlyKwh*co2PerKwh).toFixed(2)+" kg";
 
-  document.getElementById("daily-cost").textContent = (dailyKwh*pricePerKwh).toFixed(2)+" lekë";
-  document.getElementById("monthly-cost").textContent = (monthlyKwh*pricePerKwh).toFixed(2)+" lekë";
-  document.getElementById("yearly-cost").textContent = (yearlyKwh*pricePerKwh).toFixed(2)+" lekë";
+    // ================= PER PAJISJE =================
+    let list = document.getElementById("appliance-list");
+    list.innerHTML="";
 
-  document.getElementById("daily-co2").textContent = (dailyKwh*co2PerKwh).toFixed(2)+" kg";
-  document.getElementById("monthly-co2").textContent = (monthlyKwh*co2PerKwh).toFixed(2)+" kg";
-  document.getElementById("yearly-co2").textContent = (yearlyKwh*co2PerKwh).toFixed(2)+" kg";
+    appliances.forEach((a,i)=>{
+        let li = document.createElement("li");
 
-  let list = document.getElementById("appliance-list");
-  list.innerHTML="";
+        let energy = (a.watt/1000) * a.hours;
+        let dailyCost = energy * pricePerKwh;
+        let monthlyCost = dailyCost * 30;
+        let yearlyCost = dailyCost * 365;
 
-  appliances.forEach((a,i)=>{
-      let li = document.createElement("li");
+        let dailyCO2 = energy * co2PerKwh;
+        let monthlyCO2 = dailyCO2 * 30;
+        let yearlyCO2 = dailyCO2 * 365;
 
-      li.innerHTML = `
-      <div class="device-header">
-        <strong>${a.name} – ${a.watt}W × ${a.hours} orë</strong>
-        <button onclick="deleteAppliance(${i})">Fshi</button>
-      </div>
-      `;
+        li.innerHTML = `
+        <div class="device-header">
+            <strong>⚡ ${a.name}</strong>
+            <button onclick="deleteAppliance(${i})">Fshi</button>
+        </div>
+        <div>
+            ${a.watt}W × ${a.hours} orë/ditë<br><br>
+            📅 <strong>Ditore:</strong> ${energy.toFixed(2)} kWh | ${dailyCost.toFixed(2)} lekë | ${dailyCO2.toFixed(2)} kg CO₂<br>
+            🗓️ <strong>Mujore:</strong> ${(energy*30).toFixed(2)} kWh | ${monthlyCost.toFixed(2)} lekë | ${monthlyCO2.toFixed(2)} kg CO₂<br>
+            📆 <strong>Vjetore:</strong> ${(energy*365).toFixed(2)} kWh | ${yearlyCost.toFixed(2)} lekë | ${yearlyCO2.toFixed(2)} kg CO₂
+        </div>
+        `;
 
-      list.appendChild(li);
-  });
+        list.appendChild(li);
+    });
 }
 
 function deleteAppliance(index){
@@ -219,7 +256,6 @@ function deleteAppliance(index){
 }
 
 updateDashboard();
-
 </script>
 
 </body>
