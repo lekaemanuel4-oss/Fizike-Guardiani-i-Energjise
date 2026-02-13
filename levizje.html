@@ -75,11 +75,35 @@ canvas {
     width: 340px;
     margin-top: 20px;
 }
+    .back-btn{
+    position:fixed;
+    top:20px;
+    left:20px;
+    width:45px;
+    height:45px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+    color:white;
+    font-size:20px;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    background:#00ff88;
+    color:black;
+}
+
 </style>
 </head>
 <body>
 
-<h1>🚀 Simulator Avancuar i Lëvizjes së Projektileve</h1>
+<h1>🚀 Simulator Avancuar i Lëvizjes së Trupave pas Hedhjes</h1>
+<a href="index.html" class="back-btn">⬅</a>
 
 <div class="container">
 
@@ -269,3 +293,4 @@ function drawChart(points){
 
 </body>
 </html>
+
