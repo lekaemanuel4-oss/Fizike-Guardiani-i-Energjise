@@ -1,1 +1,0 @@
-# Fizike-Guardiani-i-Energjise
