@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Guardian Platform</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    text-align:center;
+}
+
+.hero{
+    padding:4rem 1rem;
+}
+
+.hero h1{
+    font-size:2.5rem;
+    margin-bottom:1rem;
+}
+
+.hero p{
+    max-width:600px;
+    margin:auto;
+    opacity:0.85;
+}
+
+.main-btn{
+    margin-top:2rem;
+    padding:1rem 2rem;
+    font-size:1.1rem;
+    border:none;
+    border-radius:15px;
+    font-weight:800;
+    cursor:pointer;
+    background:linear-gradient(135deg,#00ff88,#00cc66);
+    color:black;
+    transition:0.3s;
+}
+
+.main-btn:hover{
+    transform:scale(1.07);
+    box-shadow:0 10px 30px rgba(0,255,150,0.5);
+}
+
+.side-section{
+    margin-top:3rem;
+    padding:2rem;
+    background:rgba(255,255,255,0.05);
+}
+
+.side-card{
+    display:inline-block;
+    padding:1.5rem;
+    border-radius:15px;
+    background:rgba(255,255,255,0.08);
+    max-width:400px;
+}
+
+.side-card button{
+    margin-top:1rem;
+    padding:0.7rem 1.2rem;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#ffcc00;
+    font-weight:700;
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+<h1> Guardiani i Energjisë <br>
+⚡⚡⚡
+</h1>
+<p>
+Sistem interaktiv i avancuar për monitorimin e konsumit të energjisë, 
+vlerësimin e kostos (ditore, mujore, vjetore) 
+dhe analizën e emetimit të dioksidit të karbonit.
+</p>
+
+<button class="main-btn" onclick="location.href='dashboard.html'">
+Futu tek Guardiani i Energjisë
+</button>
+</section>
+
+<section class="side-section">
+<h2>🎮 Mini Laboratori i Fizikës</h2>
+
+<div class="side-card">
+<p>
+Provoni rrugën që një trup përshkon pas një hedhjeje vertikale me shpejtësi dhe kënd të caktuar, duke llogaritur kohën e ngritjes, lartësinë maksimale dhe kohën totale të fluturimit.
+</p>
+
+<button onclick="location.href='levizje.html'">
+Simuloni Lëvizjen
+</button>
+</div>
+
+</section>
+
+</body>
+</html>
